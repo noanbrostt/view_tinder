@@ -454,6 +454,61 @@
         },
     });
 
+    $("#login_form").on("click", function (e) {
+        e.preventDefault();
+
+        let matricula = $(".sign-in .input_matricula");
+        let senha = $(".sign-in .password");
+
+        let erros = [];
+
+        // Resetar erros anteriores
+        $(".input-error").removeClass("input-error");
+
+        // Validação da matrícula
+        if (matricula.val().trim().length !== 6) {
+            erros.push("A matrícula deve ter 6 números.");
+            matricula.addClass("input-error");
+        }
+
+        // Validação da senha
+        if (senha.val().trim().length == 0) {
+            erros.push("A senha está vazia.");
+            senha.addClass("input-error");
+        }
+
+        if (erros.length > 0) {
+            erros.forEach((erro, index) => {
+                setTimeout(() => {
+                    Toast.fire({
+                        icon: "error",
+                        title: erro,
+                    });
+                }, index * 600); // 🔥 Intervalo de 600ms entre cada toast
+            });
+        } else {
+            // ✅ Dados válidos - pode enviar via AJAX
+            console.log("Enviando dados...");
+
+            // $.ajax({
+            //     url: "/seu-endpoint-aqui",
+            //     type: "POST",
+            //     data: {
+            //         matricula: matricula.val().trim(),
+            //         senha: senha.val().trim(),
+            //     },
+            //     success: function (response) {
+            //         console.log("Sucesso:", response);
+            //         // Redirecionar ou mostrar mensagem de sucesso
+            //     },
+            //     error: function (error) {
+            //         console.log("Erro:", error);
+            //         alert("Ocorreu um erro ao fazer login.");
+            //     },
+            // });
+        }
+    });
+
     $("#register_form").on("click", function (e) {
         let matricula = $(".sign-up .input_matricula");
         let cpf = $(".sign-up .input_cpf");
