@@ -174,6 +174,10 @@
         text-align: center;
         transform: translateX(0);
         transition: all 0.6s ease-in-out;
+
+        h1 {
+            margin-bottom: 0px;
+        }
     }
     .toggle-left {
         transform: translateX(-200%);
@@ -318,7 +322,7 @@
                 <i class="fa-solid fa-eye toggle-password"></i>
             </span>
             <button class="btn btn-primary" id="register_form">
-                Cadastre-se
+                Cadastrar-se
             </button>
         </div>
     </div>
@@ -351,7 +355,7 @@
         <div class="toggle">
             <div class="toggle-panel toggle-left">
                 <h1>Já É De Casa?</h1>
-                <p>Entre com sua conta e continue sua experiência</p>
+                <p>Insira sua matrícula e senha</p>
                 <button class="hidden btn btn-primary" id="login">
                     Entrar
                 </button>
@@ -360,7 +364,7 @@
                 <h1>Primeira Vez?</h1>
                 <p>Crie uma senha para entrar</p>
                 <button class="hidden btn btn-primary" id="register">
-                    Cadastre-se
+                    Cadastrar-se
                 </button>
             </div>
         </div>
@@ -394,7 +398,7 @@
             <div class="modal-body">
                 <p>
                     Caso seja seu primeiro acesso ou tenha esquecido sua senha,
-                    clique em "Cadastra-se" e crie uma nova senha.
+                    clique em "Cadastrar-se" e crie uma nova senha.
                 </p>
             </div>
             <div class="modal-footer">
@@ -460,24 +464,21 @@
         let matricula = $(".sign-in .input_matricula");
         let senha = $(".sign-in .password");
 
-        let erros = [];
+        const valido = validarCampos([
+            {
+                element: matricula,
+                type: "exact",
+                length: 6,
+                message: "A matrícula deve ter 6 números.",
+            },
+            {
+                element: senha,
+                type: "required",
+                message: "A senha está vazia.",
+            },
+        ]);
 
-        // Resetar erros anteriores
-        $(".input-error").removeClass("input-error");
-
-        // Validação da matrícula
-        if (matricula.val().trim().length !== 6) {
-            erros.push("A matrícula deve ter 6 números.");
-            matricula.addClass("input-error");
-        }
-
-        // Validação da senha
-        if (senha.val().trim().length == 0) {
-            erros.push("A senha está vazia.");
-            senha.addClass("input-error");
-        }
-
-        if (erros.length > 0) {
+        if (valido) {
             erros.forEach((erro, index) => {
                 setTimeout(() => {
                     Toast.fire({
@@ -514,30 +515,27 @@
         let cpf = $(".sign-up .input_cpf");
         let senha = $(".sign-up .password");
 
-        let erros = [];
+        const valido = validarCampos([
+            {
+                element: matricula,
+                type: "exact",
+                length: 6,
+                message: "A matrícula deve ter 6 números.",
+            },
+            {
+                element: cpf,
+                type: "exact",
+                length: 14, // Máscara aplicada no CPF
+                message: "O CPF deve ter 11 números.",
+            },
+            {
+                element: senha,
+                type: "required",
+                message: "A senha está vazia.",
+            },
+        ]);
 
-        // Resetar erros anteriores
-        $(".input-error").removeClass("input-error");
-
-        // Validação da matrícula
-        if (matricula.val().trim().length !== 6) {
-            erros.push("A matrícula deve ter 6 números.");
-            matricula.addClass("input-error");
-        }
-
-        // Validação do CPF
-        if (cpf.val().trim().length !== 14) {
-            erros.push("O CPF deve ter 11 números.");
-            cpf.addClass("input-error");
-        }
-
-        // Validação da senha
-        if (senha.val().trim().length == 0) {
-            erros.push("A senha está vazia.");
-            senha.addClass("input-error");
-        }
-
-        if (erros.length > 0) {
+        if (valido) {
             erros.forEach((erro, index) => {
                 setTimeout(() => {
                     Toast.fire({
@@ -574,4 +572,46 @@
     $("input").on("input", function () {
         $(this).removeClass("input-error");
     });
+
+    function validarCampos(campos) {
+        let erros = [];
+
+        // Resetar erros anteriores
+        campos.forEach((campo) => {
+            campo.element.removeClass("input-error");
+        });
+
+        campos.forEach((campo) => {
+            const valor = campo.element.val().trim();
+
+            if (campo.type === "exact" && valor.length !== campo.length) {
+                erros.push(campo.message);
+                campo.element.addClass("input-error");
+            }
+
+            if (campo.type === "min" && valor.length < campo.length) {
+                erros.push(campo.message);
+                campo.element.addClass("input-error");
+            }
+
+            if (campo.type === "required" && valor.length === 0) {
+                erros.push(campo.message);
+                campo.element.addClass("input-error");
+            }
+        });
+
+        if (erros.length > 0) {
+            erros.forEach((erro, index) => {
+                setTimeout(() => {
+                    Toast.fire({
+                        icon: "error",
+                        title: erro,
+                    });
+                }, index * 600); // Espaçamento entre os alerts
+            });
+            return false;
+        }
+
+        return true;
+    }
 </script>
