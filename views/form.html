@@ -244,13 +244,19 @@
         cropper.destroy();
       }
 
-      cropImage.onload = () => {
+cropImage.onload = () => {
         cropper = new Cropper(cropImage, {
           aspectRatio: 9/16,
-          viewMode: 1,
-          dragMode: 'move',
-          autoCropArea: 1,
+          viewMode: 1, // viewMode 1 garante que a grade nunca saia do contêiner
+          dragMode: 'move', // <--- DESCOMENTE E USE ISSO!
+          cropBoxMovable: false, // <--- Adicione ou garanta que isso seja false
+          cropBoxResizable: false, // <--- Adicione ou garanta que isso seja false
+          toggleDragModeOnDblclick: false, // Opcional: para evitar que mude o dragMode
           background: false,
+          // movable: false, // Remova este se você quer que a IMAGEM seja movable
+          // resizable: false, // Remova este se você quer que a IMAGEM seja resizable (via zoom/move)
+          // zoomable: false, // Remova este se você quer que a IMAGEM seja zoomable
+          autoCropArea: 1, // Isso garante que a área de corte ocupe todo o espaço disponível inicialmente
         });
       };
 
