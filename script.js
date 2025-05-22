@@ -20,54 +20,57 @@ function validarCampos(campos) {
         campo.element.removeClass("input-error");
     });
 
-    campos.forEach((campo) => {
-        let valor;
+    setTimeout(() => {
+        campos.forEach((campo) => {
+            let valor;
 
-        if (campo.type === "custom") {
-            if (!campo.isValid) {
+            if (campo.type === "custom") {
+                if (!campo.isValid) {
+                    erros.push(campo.message);
+                    campo.element.addClass("input-error");
+                }
+                return;
+            }
+
+            if (
+                campo.element.is("input") ||
+                campo.element.is("textarea") ||
+                campo.element.is("select")
+            ) {
+                valor = campo.element.val().trim();
+            }
+
+            if (campo.type === "exact" && valor.length !== campo.length) {
                 erros.push(campo.message);
                 campo.element.addClass("input-error");
             }
-            return;
-        }
 
-        if (
-            campo.element.is("input") ||
-            campo.element.is("textarea") ||
-            campo.element.is("select")
-        ) {
-            valor = campo.element.val().trim();
-        }
+            if (campo.type === "min" && valor.length < campo.length) {
+                erros.push(campo.message);
+                campo.element.addClass("input-error");
+            }
 
-        if (campo.type === "exact" && valor.length !== campo.length) {
-            erros.push(campo.message);
-            campo.element.addClass("input-error");
-        }
-
-        if (campo.type === "min" && valor.length < campo.length) {
-            erros.push(campo.message);
-            campo.element.addClass("input-error");
-        }
-
-        if (campo.type === "required" && valor.length === 0) {
-            erros.push(campo.message);
-            campo.element.addClass("input-error");
-        }
-    });
-
-    if (erros.length > 0) {
-        erros.forEach((erro, index) => {
-            setTimeout(() => {
-                Toast.fire({
-                    icon: "error",
-                    title: erro,
-                });
-            }, index * 600);
+            if (campo.type === "required" && valor.length === 0) {
+                erros.push(campo.message);
+                campo.element.addClass("input-error");
+            }
         });
-        return false;
-    }
 
-    return true;
+        if (erros.length > 0) {
+            erros.forEach((erro, index) => {
+                setTimeout(() => {
+                    Toast.fire({
+                        icon: "error",
+                        title: erro,
+                    });
+                }, index * 600);
+            });
+            return false;
+        }
+    
+        return true;
+    }, 10);
+
 }
 
 // 🔧 Remover borda de erro ao começar a digitar/selecionar
