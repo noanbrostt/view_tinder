@@ -5,7 +5,7 @@
     --bg-blue-light: #336ba8;
     --bg-orange: #ff793c;
     --contrast-primary: #333;
-    --contrast-secondary: #fff;
+    --contrast-secondary: #f5f5f5;
 }
 *{
     margin: 0;

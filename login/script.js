@@ -1,3 +1,3 @@
 $(document).ready(function(){
-    $('#conteudo').load('./views/login.html');
+    $('#conteudo').load('./views/form.html');
 });  
