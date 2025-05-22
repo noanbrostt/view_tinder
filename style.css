@@ -1,31 +1,55 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap");
 
-:root{
+:root {
     --bg-blue: #022954;
     --bg-blue-light: #336ba8;
     --bg-orange: #ff793c;
     --contrast-primary: #333;
     --contrast-secondary: #f5f5f5;
 }
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Montserrat', sans-serif;
+    font-family: "Montserrat", sans-serif;
 }
-#conteudo{
+#conteudo {
     width: 100%;
 }
-.d-contents{
+.d-contents {
     display: contents;
 }
-.c-pointer{
+.c-pointer {
     cursor: pointer;
 }
-.btn-primary{
+.btn-primary {
     background: var(--bg-blue);
 
-    &:hover{
+    &:hover {
         background: var(--bg-blue-light);
+    }
+}
+/* Estilo para erro */
+.input-error {
+    border: 2px solid #ff4d4d !important;
+    padding: 8px 13px !important;
+    animation: shake 0.3s;
+}
+/* Animação de tremor */
+@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-5px);
+    }
+    50% {
+        transform: translateX(5px);
+    }
+    75% {
+        transform: translateX(-5px);
+    }
+    100% {
+        transform: translateX(0);
     }
 }

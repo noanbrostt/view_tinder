@@ -206,32 +206,6 @@
         right: 9px;
     }
 
-    /* Estilo para erro */
-    .input-error {
-        border: 2px solid #ff4d4d !important;
-        padding: 8px 13px !important;
-        animation: shake 0.3s;
-    }
-
-    /* Animação de tremor */
-    @keyframes shake {
-        0% {
-            transform: translateX(0);
-        }
-        25% {
-            transform: translateX(-5px);
-        }
-        50% {
-            transform: translateX(5px);
-        }
-        75% {
-            transform: translateX(-5px);
-        }
-        100% {
-            transform: translateX(0);
-        }
-    }
-
     /* Responsive */
 
     @media only screen and (max-width: 600px) {
@@ -445,18 +419,6 @@
     $(".input_matricula").mask("000000");
     $(".input_cpf").mask("000.000.000-00");
     //
-
-    const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 4000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-            toast.addEventListener("mouseenter", Swal.stopTimer);
-            toast.addEventListener("mouseleave", Swal.resumeTimer);
-        },
-    });
 
     $("#login_form").on("click", function (e) {
         e.preventDefault();
