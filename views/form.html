@@ -283,28 +283,25 @@
 
             confirmCrop.addEventListener("click", () => {
                 if (cropper) {
-                    cropper
-                        .getCroppedCanvas({
-                            width: 720,
-                            height: 1280,
-                        })
-                        .toBlob(
-                            (blob) => {
-                                croppedBlob = blob;
+                    const canvas = cropper.getCroppedCanvas({
+                        width: 720,
+                        height: 1280,
+                    });
 
-                                const url = URL.createObjectURL(blob);
-                                uploadArea.innerHTML = `<img src="${url}" alt="Foto Recortada"/>`;
+                    compressImage(canvas, 2000, (blob) => {
+                        // 2000 = tamanho máximo em KB
+                        croppedBlob = blob;
 
-                                modalCrop.style.display = "none";
-                                cropper.destroy();
-                                cropper = null;
-                            },
-                            "image/jpeg",
-                            0.8
-                        );
+                        const url = URL.createObjectURL(blob);
+                        uploadArea.innerHTML = `<img src="${url}" alt="Foto Recortada"/>`;
+
+                        modalCrop.style.display = "none";
+                        cropper.destroy();
+                        cropper = null;
+
+                        uploadArea.classList.remove("input-error");
+                    });
                 }
-
-                uploadArea.classList.remove("input-error");
             });
 
             sobre.addEventListener("input", () => {
@@ -391,6 +388,28 @@
                     // console.log('Formulário pronto para envio!', formData);
                     alert("Formulário enviado com sucesso!");
                 });
+
+            function compressImage(canvas, maxSizeKB, callback, quality = 0.9) {
+                canvas.toBlob(
+                    (blob) => {
+                        const sizeKB = blob.size / 1024;
+
+                        if (sizeKB > maxSizeKB && quality > 0.1) {
+                            // Reduz qualidade e tenta novamente
+                            compressImage(
+                                canvas,
+                                maxSizeKB,
+                                callback,
+                                quality - 0.05
+                            );
+                        } else {
+                            callback(blob);
+                        }
+                    },
+                    "image/jpeg",
+                    quality
+                );
+            }
         </script>
     </body>
 </html>

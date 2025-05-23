@@ -53,3 +53,8 @@
         transform: translateX(0);
     }
 }
+select:focus,
+textarea:focus,
+input:focus {
+    outline: none;
+}

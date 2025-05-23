@@ -1,0 +1,301 @@
+
+<style>
+    body {
+        background: #f9f9f9;
+        margin: 40px;
+    }
+
+    h1 {
+        font-size: 32px;
+        margin-bottom: 32px;
+    }
+
+    /* Layout dos filtros */
+    .dataTables_wrapper .dataTables_length,
+    .dataTables_wrapper .dataTables_filter {
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .dataTables_wrapper .dataTables_length {
+        margin-right: 30px;
+    }
+
+    .dataTables_wrapper .dataTables_filter {
+        float: right;
+    }
+
+    .paging_simple_numbers {
+        display: flex;
+        gap: 10px;
+    }
+
+    /* Modal */
+    .swal2-popup {
+        width: 800px !important;
+        max-width: 95vw;
+        border-radius: 16px !important;
+        padding: 30px 20px !important;
+    }
+
+    .swal2-title {
+        color: var(--bg-blue);
+        padding: 8px;
+    }
+
+    .modal-content {
+        display: flex;
+        gap: 24px;
+        flex-direction: row;
+        border: none;
+    }
+
+    .modal-info {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        gap: 15px;
+        padding-top: 15px;
+    }
+
+    .foto-candidato {
+        width: 270px;
+        height: 480px;
+        object-fit: cover;
+        border-radius: 12px;
+        border: 3px solid var(--bg-blue-light);
+    }
+
+    .modal-info h3 {
+        margin: 0;
+        font-size: 20px;
+        color: var(--bg-blue);
+    }
+
+    .modal-info p {
+        margin: 8px 0 0 0;
+        font-size: 19px;
+        color: black;
+    }
+
+    .modal-sobre {
+        margin-top: 16px;
+        background: #f6f6f6;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 15px;
+    }
+
+    .modal-select {
+        margin-top: 24px;
+        width: 100%;
+    }
+
+    .modal-select label {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--bg-blue);
+        font-weight: bold;
+    }
+
+    .modal-select select {
+        width: 100%;
+        padding: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+    }
+
+    /* Tabela */
+    table.dataTable {
+        border-collapse: collapse;
+        width: 100%;
+        background: white;
+    }
+
+    table.dataTable thead {
+        background-color: var(--bg-blue);
+        color: white;
+    }
+
+    table.dataTable thead th {
+        position: relative;
+        cursor: pointer;
+        padding-right: 24px;
+    }
+
+    table.dataTable thead th:hover {
+        background-color: var(--bg-blue-light);
+    }
+
+    /* Setinhas */
+    table.dataTable th.sorting:after,
+    table.dataTable th.sorting_asc:after,
+    table.dataTable th.sorting_desc:after {
+        content: '';
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+        border: 6px solid transparent;
+    }
+
+    table.dataTable th.sorting:after {
+        border-top-color: white;
+        top: 55%;
+    }
+
+    table.dataTable th.sorting_asc:after {
+        border-bottom-color: white;
+        top: 45%;
+    }
+
+    table.dataTable th.sorting_desc:after {
+        border-top-color: white;
+        top: 55%;
+    }
+
+    table.dataTable th, table.dataTable td {
+        padding: 14px 20px;
+        text-align: left;
+    }
+
+    table.dataTable tr:nth-child(even) {
+        background-color: #f6f6f6;
+    }
+
+    table.dataTable tbody tr:hover {
+        background-color: #ece7ff;
+    }
+
+    /* Botão visualizar */
+    .btn-visualizar {
+        background-color: var(--bg-blue);
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+
+    .btn-visualizar:hover {
+        background-color: var(--bg-blue-light);
+    }
+</style>
+</head>
+<body>
+
+<h1>Cadastro de Candidatos</h1>
+
+<table id="tabela" class="display">
+    <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Intenção</th>
+            <th>Sobre</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Ana Souza</td>
+            <td>Namoro</td>
+            <td>Gosta de viajar e de natureza.</td>
+            <td><button class="btn-visualizar" onclick="abrirModal('Ana Souza', 'Namoro', 'Gosta de viajar e de natureza.', 'https://via.placeholder.com/270x480')">Visualizar</button></td>
+        </tr>
+        <tr>
+            <td>Lucas Lima</td>
+            <td>Amizade</td>
+            <td>Apaixonado por tecnologia.</td>
+            <td><button class="btn-visualizar" onclick="abrirModal('Lucas Lima', 'Amizade', 'Apaixonado por tecnologia.', 'https://via.placeholder.com/270x480')">Visualizar</button></td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<!-- DataTables -->
+<script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#tabela').DataTable({
+            language: {
+                lengthMenu: "Exibir _MENU_ por página",
+                zeroRecords: "Nenhum registro encontrado",
+                info: "Exibindo _START_ a _END_ de _TOTAL_ registros",
+                infoEmpty: "Nenhum registro disponível",
+                infoFiltered: "(filtrado de _MAX_ registros totais)",
+                search: "Pesquisar:",
+                paginate: {
+                    first: "Primeiro",
+                    last: "Último",
+                    next: "Próximo",
+                    previous: "Anterior"
+                }
+            }
+        });
+    });
+
+    function abrirModal(nome, intencao, sobre, foto) {
+        Swal.fire({
+            title: nome,
+            html: `
+            <div class="modal-content">
+                <img src="${foto}" class="foto-candidato" alt="Foto de ${nome}">
+                <div class="modal-info">
+                    <h3>Intenção: <span>${intencao}</span></h3>
+                    <div class="modal-sobre">
+                        <strong>Sobre:</strong>
+                        <p>${sobre}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-select">
+                <label for="motivo">Classificação:</label>
+                <select id="motivo">
+                    <option value="">Selecione</option>
+                    <option value="aprovado">Aprovado(a)</option>
+                    <option value="foto-impropria">Foto imprópria</option>
+                    <option value="texto-improprio">Texto impróprio</option>
+                    <option value="foto-texto-improprio">Foto e textos impróprios</option>
+                </select>
+            </div>
+            `,
+            showCancelButton: true,
+            showCloseButton: true,
+            focusConfirm: false,
+            cancelButtonText: 'Fechar',
+            confirmButtonText: 'Enviar Avaliação',
+            confirmButtonColor: 'var(--bg-blue)',
+            preConfirm: () => {
+                const motivo = Swal.getPopup().querySelector('#motivo').value;
+                if (!motivo) {
+                    Swal.showValidationMessage('Selecione um motivo ou feche');
+                    return false;
+                }
+                return motivo;
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const motivoSelecionado = result.value;
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Avaliação enviada!',
+                    text: `Motivo selecionado: ${motivoSelecionado}`,
+                    timer: 2500,
+                    showConfirmButton: false
+                });
+
+                // Aqui você pode enviar via AJAX para backend, exemplo:
+                /*
+                $.post('/api/avaliar', {
+                    id: candidato.id,
+                    motivo: motivoSelecionado
+                });
+                */
+            }
+        });
+    }
+</script>
