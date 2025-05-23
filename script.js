@@ -80,5 +80,5 @@ $(document).on("input change", ".input-error", function () {
 
 // ✅ Carregar o conteúdo da página
 $(document).ready(function () {
-    $("#conteudo").load("./views/validar.html");
+    $("#conteudo").load("./views/tinder.html");
 });
